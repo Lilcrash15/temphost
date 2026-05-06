@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Commission - Pump & Dump</title>
+    <link rel="stylesheet" type="text/css" href="pump.css">
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyCvJiyuMPPm3at_7QxLA-FRacqyC9SeVuA",
+        authDomain: "dump-and-pump.firebaseapp.com",
+        projectId: "dump-and-pump",
+        storageBucket: "dump-and-pump.firebasestorage.app",
+        messagingSenderId: "1052937380919",
+        appId: "1:1052937380919:web:1908a061e085558e28cbb2",
+        measurementId: "G-X7K1KM44YD"
+      };
+      try {
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.firestoreFunctions = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, getDoc, setDoc };
+        window.isFirebaseReady = true;
+        document.dispatchEvent(new CustomEvent('firebaseReady', { detail: { db: window.db, functions: window.firestoreFunctions } }));
+      } catch (error) {
+        window.isFirebaseReady = false;
+        document.dispatchEvent(new CustomEvent('firebaseError', { detail: { error } }));
+      }
+    </script>
+    <script src="utility.js"></script>
+    <script defer src="commission.js"></script>
+</head>
+<body class="htmlbackground">
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Commission...</p>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="logo-container">
+                <img src="Logo.png" alt="">
+            </button>
+            <div class="dropdown-content">
+                <a href="index.html">Home / POS</a>
+                <a href="commission.html">My Commission</a>
+                <a href="manager.html">Manager Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content-wrapper">
+        <header>
+            <div class="brand-header">
+                <h1>PUMP & DUMP</h1>
+                <p class="brand-tagline">Employee Staff Portal</p>
+            </div>
+        </header>
+
+        <!-- LOGIN CARD -->
+        <div id="commission-login-form-container" class="login-card">
+            <div class="login-card-header">
+                <h2 class="login-card-title">💰 My Commission</h2>
+                <p class="login-card-subtitle">Sign in to view your earnings</p>
+            </div>
+            <form id="commission-page-login-form" class="login-form">
+                <div class="login-field">
+                    <label for="commission-login-select">Your Name</label>
+                    <select id="commission-login-select">
+                        <option value="">— Loading... —</option>
+                    </select>
+                </div>
+                <div class="login-field" id="commission-password-group" style="display:none;">
+                    <label for="commission-page-password">Password</label>
+                    <input type="password" id="commission-page-password" autocomplete="current-password" placeholder="Enter your password">
+                </div>
+                <button type="submit" id="commission-login-submit-btn" class="login-btn" style="display:none;">Login</button>
+            </form>
+            <p id="commission-page-login-error" class="login-error" style="display:none;">Incorrect password. Please try again.</p>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="commission-main-content" class="content-block" style="display:none; max-width:600px; width:100%;">
+            <h1>💰 My Commission</h1>
+            <select id="employee-commission-select" style="display:none;"></select>
+            <hr>
+            <div id="commission-details-container" style="display:none;">
+                <h2 id="selected-employee-name" style="text-align:center; border-bottom:none;">—</h2>
+                <div class="commission-container">
+                    <p class="commission-owed-display">
+                        Total Commission Owed:
+                        <strong id="total-commission-owed">$0</strong>
+                    </p>
+                    <p class="account-info">
+                        Transactions: <strong id="transaction-count">0</strong>
+                    </p>
+                    <p class="account-info">
+                        Player ID: <strong id="employee-player-id">—</strong>
+                    </p>
+                </div>
+                <hr style="border-color:#3a2e10; margin:20px 0;">
+                <p id="commission-status-message" style="margin-top:10px; text-align:center; font-weight:600;"></p>
+                <p style="font-size:0.8rem; color:#6a5030; text-align:center; margin-top:8px;">
+                    Only managers can mark commission as paid.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <small>Pump & Dump Staff Portal · Internal Use Only</small>
+    </footer>
+</body>
+</html>

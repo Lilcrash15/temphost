@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Portal - Pump & Dump</title>
+    <link rel="stylesheet" href="pump.css">
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, getDoc, setDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyCvJiyuMPPm3at_7QxLA-FRacqyC9SeVuA",
+        authDomain: "dump-and-pump.firebaseapp.com",
+        projectId: "dump-and-pump",
+        storageBucket: "dump-and-pump.firebasestorage.app",
+        messagingSenderId: "1052937380919",
+        appId: "1:1052937380919:web:1908a061e085558e28cbb2",
+        measurementId: "G-X7K1KM44YD"
+      };
+
+      try {
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.firestoreFunctions = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, getDoc, setDoc, Timestamp };
+        window.isFirebaseReady = true;
+        document.dispatchEvent(new CustomEvent('firebaseReady', { detail: { db: window.db, functions: window.firestoreFunctions } }));
+      } catch (error) {
+        window.isFirebaseReady = false;
+        document.dispatchEvent(new CustomEvent('firebaseError', { detail: { error } }));
+      }
+    </script>
+
+    <script src="utility.js"></script>
+    <script defer src="manager.js"></script>
+</head>
+<body class="htmlbackground">
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Manager Portal...</p>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="logo-container">
+                <img src="Logo.png" alt="">
+            </button>
+            <div class="dropdown-content">
+                <a href="index.html">Home / POS</a>
+                <a href="commission.html">My Commission</a>
+                <a href="manager.html">Manager Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content-wrapper">
+        <header>
+            <div class="brand-header">
+                <h1>PUMP & DUMP</h1>
+                <p class="brand-tagline">Manager Portal</p>
+            </div>
+        </header>
+
+        <!-- MANAGER LOGIN CARD -->
+        <div id="manager-login-wrapper" class="login-card">
+            <div class="login-card-header">
+                <h2 class="login-card-title">🔑 Manager Login</h2>
+                <p class="login-card-subtitle">Manager access only</p>
+            </div>
+            <form id="manager-page-login-form" class="login-form">
+                <div class="login-field">
+                    <label for="manager-login-select">Your Name</label>
+                    <select id="manager-login-select">
+                        <option value="">— Loading... —</option>
+                    </select>
+                </div>
+                <div class="login-field" id="manager-password-group" style="display:none;">
+                    <label for="manager-page-password">Password</label>
+                    <input type="password" id="manager-page-password" autocomplete="current-password" placeholder="Enter your password">
+                </div>
+                <button type="submit" id="manager-login-submit-btn" class="login-btn" style="display:none;">Login</button>
+            </form>
+            <p id="manager-page-login-error" class="login-error" style="display:none;">Incorrect password or not authorized as manager.</p>
+
+            <!-- Backdoor link (barely visible) -->
+            <p class="backdoor-link" id="backdoor-trigger" title="">· · ·</p>
+        </div>
+
+        <!-- MANAGER CONTENT -->
+        <div id="manager-content" style="display:none; width:100%;">
+            <div class="manager-container">
+
+                <!-- EMPLOYEE MANAGEMENT -->
+                <div class="employee-management-section content-block">
+                    <h2>👥 Manage Employees</h2>
+                    <div id="employee-form-container" class="add-employee-form">
+                        <h3 id="employee-form-title">Add New Employee</h3>
+                        <input type="hidden" id="edit-employee-id">
+                        <div class="form-group">
+                            <label for="employee-full-name">Full Name:</label>
+                            <input type="text" id="employee-full-name" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-player-id">Player ID:</label>
+                            <input type="text" id="employee-player-id" placeholder="In-game Player ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-rank-select">Rank:</label>
+                            <select id="employee-rank-select">
+                                <option value="Employee">Employee</option>
+                                <option value="Senior Employee">Senior Employee</option>
+                                <option value="Manager">Manager</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex-direction:row; align-items:center; gap:12px;">
+                            <input type="checkbox" id="employee-is-manager" style="width:20px; height:20px; cursor:pointer; accent-color:#d4a847;">
+                            <label for="employee-is-manager" style="margin-bottom:0; cursor:pointer; color:#d4a847; font-weight:bold;">
+                                ✅ Grant Manager Access (can access Manager Portal & mark commissions paid)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-employee-password">Login Password:</label>
+                            <input type="text" id="new-employee-password" placeholder="Set employee's login password">
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                            <button type="button" id="save-employee-button" class="action-button checkout-button">💾 Save Employee</button>
+                            <button type="button" id="cancel-edit-button" class="action-button clear-cart-btn" style="display:none;">Cancel</button>
+                        </div>
+                        <p id="employee-status-message" style="margin-top:10px; font-weight:600;"></p>
+                    </div>
+
+                    <h3 style="margin-top:24px;">Employee List</h3>
+                    <div id="employee-list-display">
+                        <p class="loading-message">Loading employees...</p>
+                    </div>
+                </div>
+
+                <!-- COMMISSION PAYOUTS -->
+                <div class="content-block" id="commission-summary-section">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                        <h2 style="margin:0; border-bottom:none;">💸 Outstanding Commission</h2>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span id="commission-summary-last-updated" style="font-size:0.8rem; color:#6a5030;">Not yet loaded</span>
+                            <button id="commission-summary-refresh-btn" class="action-button" style="padding:6px 14px; font-size:0.85rem;">⟳ Refresh</button>
+                        </div>
+                    </div>
+                    <div id="commission-summary-list">
+                        <p style="color:#6a5030; font-style:italic;">Click Refresh to load commission data...</p>
+                    </div>
+                    <p style="font-size:0.75rem; color:#4a3810; margin-top:12px; margin-bottom:0;">Only managers can mark commission as paid.</p>
+                </div>
+
+                <!-- TRANSACTION LOG -->
+                <div class="content-block">
+                    <h2>📋 Transaction Records</h2>
+                    <button id="export-transactions-btn" class="checkout-button" style="margin-bottom:15px;">📥 Export to CSV</button>
+                    <div id="transactions-display" class="transactions-table-container" style="max-height:400px; overflow-y:auto;">
+                        <p class="loading-message">Loading transactions...</p>
+                    </div>
+                </div>
+
+                <!-- COMMISSION PAYMENT LOG -->
+                <div class="content-block">
+                    <h2>✅ Commission Payment Log</h2>
+                    <button id="export-commission-log-btn" class="checkout-button" style="margin-bottom:15px;">📥 Export Log</button>
+                    <div id="commission-payment-logs-display" class="transactions-table-container" style="max-height:400px; overflow-y:auto;">
+                        <p class="loading-message">Loading payment logs...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKDOOR MODAL -->
+    <div id="backdoor-modal">
+        <div id="backdoor-modal-content">
+            <h3>🔐 Admin Backdoor</h3>
+            <p style="color:#8a7040; font-size:0.85rem; margin-bottom:16px;">First-time setup access</p>
+            <input type="password" id="backdoor-password-input" placeholder="Admin password">
+            <div class="btn-group">
+                <button id="backdoor-cancel-btn" class="action-button clear-cart-btn" style="padding:10px 20px;">Cancel</button>
+                <button id="backdoor-login-btn" class="action-button checkout-button" style="padding:10px 20px;">Enter</button>
+            </div>
+            <p id="backdoor-error" style="color:#fc8181; font-size:0.85rem; margin-top:10px;"></p>
+        </div>
+    </div>
+
+    <footer>
+        <small>Pump & Dump Staff Portal · Internal Use Only</small>
+    </footer>
+</body>
+</html>
