@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const PRODUCTS = [
         { id: 'portalodo',       name: 'Portalodo',      img: 'portaloo.png',      price: 10000, bizCut: 1000,  empCut: 9000, desc: '$10,000 | Your cut: $9,000' },
         { id: 'zero_ply',        name: '0 PLY',          img: '0ply.png',          price: 100,   bizCut: 10,    empCut: 90,   desc: '$100 | Your cut: $90' },
-        { id: 'twelve_ply',      name: '12 PLY',         img: '12ply.png',         price: 100,   bizCut: 10,    empCut: 90,   desc: '$100 | Your cut: $90' },
+        { id: 'twelve_ply',      name: '12 PLY',         img: '0ply.png',         price: 100,   bizCut: 10,    empCut: 90,   desc: '$100 | Your cut: $90' },
         { id: 'toilet_seal',     name: 'Toilet Seal',    img: 'toiletsealpng.png', price: 1000,  bizCut: 100,   empCut: 900,  desc: '$1,000 | Your cut: $900' },
         { id: 'lighter',         name: 'D&P Lighter',    img: 'lighter.png',       price: 500,   bizCut: 100,   empCut: 400,  desc: '$500 | Your cut: $400' },
         { id: 'keychain',        name: 'D&P Keychain',   img: 'keychain.png',      price: 500,   bizCut: 100,   empCut: 400,  desc: '$500 | Your cut: $400' },
