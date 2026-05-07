@@ -152,6 +152,29 @@
                     <p style="font-size:0.75rem; color:#4a3810; margin-top:12px; margin-bottom:0;">Only managers can mark commission as paid.</p>
                 </div>
 
+                <!-- COMPOST INVENTORY -->
+                <div class="content-block">
+                    <h2>🌱 Compost Inventory</h2>
+                    <p style="color:#8090a0; margin-bottom:16px; font-size:0.95rem;">
+                        Set how many Bags of Compost are currently in stock. Employees on the POS will see this count and cannot sell more than what's available.
+                    </p>
+                    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:10px;">
+                        <div>
+                            <p style="font-size:0.82rem; color:#8090a0; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Current Stock</p>
+                            <p id="compost-stock-display" style="font-size:2.5rem; font-weight:900; color:#48bb78; line-height:1;">—</p>
+                        </div>
+                        <div style="flex:1; min-width:200px;">
+                            <p style="font-size:0.82rem; color:#8090a0; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.06em;">Update Stock</p>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="number" id="compost-stock-input" min="0" placeholder="Enter quantity"
+                                    style="width:140px; padding:10px 14px; border-radius:8px; border:1px solid #3a4550; background:#0e1114; color:#e8eef4; font-size:1rem;">
+                                <button id="compost-stock-save-btn" class="action-button checkout-button" style="padding:10px 20px;">💾 Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="compost-stock-status" style="font-size:0.9rem; font-weight:600; margin-top:4px;"></p>
+                </div>
+
                 <!-- TRANSACTION LOG -->
                 <div class="content-block">
                     <h2>📋 Transaction Records</h2>
