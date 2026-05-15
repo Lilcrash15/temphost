@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== PRODUCT DEFINITIONS =====
     // Price = total sale price | bizCut = business's share | empCut = employee's commission
     const PRODUCTS = [
-        { id: 'portalodo',       name: 'Portalodo',      img: 'portaloo.png',      price: 10000, bizCut: 1000,  empCut: 9000, desc: '$10,000 | Your cut: $9,000' },
+        { id: 'portalodo',       name: 'Portaloo',      img: 'portaloo.png',      price: 10000, bizCut: 1000,  empCut: 9000, desc: '$10,000 | Your cut: $9,000' },
         { id: 'zero_ply',        name: '0 PLY',          img: '0ply.png',          price: 100,   bizCut: 10,    empCut: 90,   desc: '$100 | Your cut: $90' },
         { id: 'twelve_ply',      name: '12 PLY',         img: '0ply.png',         price: 100,   bizCut: 10,    empCut: 90,   desc: '$100 | Your cut: $90' },
         { id: 'toilet_seal',     name: 'Toilet Seal',    img: 'toiletsealpng.png', price: 1000,  bizCut: 100,   empCut: 900,  desc: '$1,000 | Your cut: $900' },
